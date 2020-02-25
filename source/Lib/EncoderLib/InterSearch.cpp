@@ -3287,7 +3287,9 @@ Distortion InterSearch::xGetAffineTemplateCost( PredictionUnit& pu, PelUnitBuf& 
   }
 
   // calc distortion
-  enum DFunc distFunc = (pu.cs->slice->getDisableSATDForRD()) ? DF_SAD : DF_HAD;
+  // BEGIN RAFAEL enum DFunc distFunc = (pu.cs->slice->getDisableSATDForRD()) ? DF_SAD : DF_HAD;
+  
+  enum DFunc distFunc = (pu.cs->slice->getDisableSATDForRD()) ? DF_SAD : DF_SAD;
   uiCost  = m_pcRdCost->getDistPart( origBuf.Y(), predBuf.Y(), pu.cs->sps->getBitDepth(CHANNEL_TYPE_LUMA), COMPONENT_Y
     , distFunc
   );
@@ -4388,7 +4390,8 @@ Distortion InterSearch::xGetSymmetricCost( PredictionUnit& pu, PelUnitBuf& origB
   double fWeight = xGetMEDistortionWeight( pu.cu->BcwIdx, eTarRefPicList );
 
   // calc distortion
-  DFunc distFunc = (!pu.cu->slice->getDisableSATDForRD()) ? DF_HAD : DF_SAD;
+  // DFunc distFunc = (!pu.cu->slice->getDisableSATDForRD()) ? DF_HAD : DF_SAD;
+  DFunc distFunc = (!pu.cu->slice->getDisableSATDForRD()) ? DF_SAD : DF_SAD;
   cost = (Distortion)floor( fWeight * (double)m_pcRdCost->getDistPart( bufTmp.Y(), predBufB.Y(), pu.cs->sps->getBitDepth( CHANNEL_TYPE_LUMA ), COMPONENT_Y, distFunc ) );
   return(cost);
 }

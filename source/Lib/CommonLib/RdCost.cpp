@@ -83,7 +83,482 @@ extern int iTpsomador;
 //! \{
 
 
+
+
 FpDistFunc RdCost::m_afpDistortFunc[DF_TOTAL_FUNCTIONS] = { nullptr, };
+
+
+// begin rafael
+int  RdCost::subtratorImpreciso(int op1, int op2, int BitsIMP)
+{
+
+
+	std::bitset<32> a(op1);
+	std::bitset<32> b(op2);
+	std::bitset<32> t(0);
+	std::bitset<33> bou(0);
+	int result = 0;
+
+	for (int i = 0; i < 32; i++) {
+		if (i < BitsIMP){
+		if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+		if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+		if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+		if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+		if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+		if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 1; }
+		if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+		if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+	}else{
+		if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+		if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+		if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+		if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+		if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+		if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+		if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+		if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+
+	}
+
+	a[i] = 0;
+	b[i] = 0;
+	}
+		result = (int)(t.to_ulong());
+
+		return (result);
+
+
+}
+
+
+
+
+int  RdCost::AXSC1(int op1, int op2, int BitsIMP)
+{
+
+		std::bitset<32> a(op1);
+		std::bitset<32> b(op2);
+		std::bitset<32> t(0);
+		std::bitset<33> bou(0);
+		int result = 0;
+
+		for (int i = 0; i < 32; i++) {
+				if (i < BitsIMP){
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+			}else{
+			    if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+
+			}
+
+			a[i] = 0;
+			b[i] = 0;
+		}
+		result = (int)(t.to_ulong());
+
+		return (result);
+}
+int  RdCost::AXSC2(int op1, int op2, int BitsIMP)
+{
+
+		std::bitset<32> a(op1);
+		std::bitset<32> b(op2);
+		std::bitset<32> t(0);
+		std::bitset<33> bou(0);
+		int result = 0;
+
+		for (int i = 0; i < 32; i++) {
+				if (i < BitsIMP){
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+			}else{
+			    if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+
+			}
+
+			a[i] = 0;
+			b[i] = 0;
+		}
+		result = (int)(t.to_ulong());
+
+		return (result);
+}
+int  RdCost::AXSC3(int op1, int op2, int BitsIMP)
+{
+
+		std::bitset<32> a(op1);
+		std::bitset<32> b(op2);
+		std::bitset<32> t(0);
+		std::bitset<33> bou(0);
+		int result = 0;
+
+		for (int i = 0; i < 32; i++) {
+				if (i < BitsIMP){
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = bou[i]; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = bou[i]; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = bou[i]; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = bou[i]; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = bou[i]; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = bou[i]; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = bou[i]; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = bou[i]; }
+			}else{
+			    if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+
+			}
+
+			a[i] = 0;
+			b[i] = 0;
+		}
+		result = (int)(t.to_ulong());
+
+		return (result);
+}
+int  RdCost::AXS1(int op1, int op2, int BitsIMP)
+{
+
+		std::bitset<32> a(op1);
+		std::bitset<32> b(op2);
+		std::bitset<32> t(0);
+		std::bitset<33> bou(0);
+		int result = 0;
+
+		for (int i = 0; i < 32; i++) {
+				if (i < BitsIMP){
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = b[i]; t[i] = 0; }
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = b[i]; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = b[i]; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = b[i]; t[i] = 1; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = b[i]; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = b[i]; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = b[i]; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = b[i]; t[i] = 1; }
+			}else{
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+
+			}
+
+			a[i] = 0;
+			b[i] = 0;
+		}
+		result = (int)(t.to_ulong());
+
+		return (result);
+}
+int  RdCost::AXS2(int op1, int op2, int BitsIMP)
+{
+
+
+		std::bitset<32> a(op1);
+		std::bitset<32> b(op2);
+		std::bitset<32> t(0);
+		std::bitset<33> bou(0);
+		int result = 0;
+
+		for (int i = 0; i < 32; i++) {
+				if (i < BitsIMP){
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = bou[i]; t[i] = 0; }
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = bou[i]; t[i] = 0; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = bou[i]; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = bou[i]; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = bou[i]; t[i] = 1; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = bou[i]; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = bou[i]; t[i] = 1; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = bou[i]; t[i] = 1; }
+			}else{
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+
+			}
+
+			a[i] = 0;
+			b[i] = 0;
+		}
+		result = (int)(t.to_ulong());
+
+		return (result);
+
+
+}
+int  RdCost::AXS3(int op1, int op2, int BitsIMP)
+{
+
+
+	std::bitset<32> a(op1);
+		std::bitset<32> b(op2);
+		std::bitset<32> t(0);
+		std::bitset<33> bou(0);
+		int result = 0;
+
+		for (int i = 0; i < 32; i++) {
+				if (i < BitsIMP){
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+			}else{
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+					if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+					if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+					if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+					if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+
+			}
+
+			a[i] = 0;
+			b[i] = 0;
+		}
+		result = (int)(t.to_ulong());
+
+		return (result);
+
+
+
+}
+int  RdCost::bitFS(int op1, int op2, int BitsIMP)
+{
+
+
+
+		std::bitset<32> a(op1);
+		std::bitset<32> b(op2);
+		std::bitset<32> t(0);
+		std::bitset<33> bou(0);
+		int result = 0;
+
+		for (int i = 0; i < 32; i++) {
+		    if (i < BitsIMP){
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+			}else{
+			    if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+
+			}
+
+			a[i] = 0;
+			b[i] = 0;
+		}
+		result = (int)(t.to_ulong());
+
+		return (result);
+
+
+
+}
+int  RdCost::mnl(int op1, int op2, int BitsIMP)
+{
+
+
+
+		std::bitset<32> a(op1);
+		std::bitset<32> b(op2);
+		std::bitset<32> t(0);
+		std::bitset<33> bou(0);
+		int result = 0;
+
+		for (int i = 0; i < 32; i++) {
+		    if (i < BitsIMP){
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+			}else{
+			    if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+
+			}
+
+			a[i] = 0;
+			b[i] = 0;
+		}
+		result = (int)(t.to_ulong());
+
+		return (result);
+
+
+}
+int  RdCost::srfft(int op1, int op2, int BitsIMP)
+{
+
+		std::bitset<32> a(op1);
+		std::bitset<32> b(op2);
+		std::bitset<32> t(0);
+		std::bitset<33> bou(0);
+		int result = 0;
+
+		for (int i = 0; i < 32; i++) {
+		    if (i < BitsIMP){
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+			}else{
+			    if ((a[i] == 0 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 0 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 1; t[i] = 1; }
+				if ((a[i] == 0 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 1; }
+				if ((a[i] == 1 && b[i] == 0 && bou[i] == 1)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 0)) { bou[i + 1] = 0; t[i] = 0; }
+				if ((a[i] == 1 && b[i] == 1 && bou[i] == 1)) { bou[i + 1] = 1; t[i] = 1; }
+
+			}
+
+			a[i] = 0;
+			b[i] = 0;
+		}
+		result = (int)(t.to_ulong());
+
+		return (result);
+}
+int  RdCost::loa(int A, int B, int bits) {
+	int Ap, Bp, Sp, Ai, Bi, Si, S, Carry;
+	int mP, mI, mC;
+	mI = (1 << bits) - 1;
+	mP = ~mI;
+	mC = 1 << (bits - 1);
+	Ai = A & mI;	Bi = B & mI;	Si = Ai | Bi;	Carry = (A & B & mC) << 1;
+	Ap = A & mP;	Bp = B & mP;	Sp = (Ap + Bp + Carry) & mP;
+	S = Sp | Si;	return S;
+}
+
+
+int  RdCost::subtrai(int A, int B, int bits, int tipo) {
+  //printf("A =  %d B= %d bits = %d tipo %d \n", A,B,bits,tipo);
+  //fprintf( stdout, "A =  %d B= %d bits = %d tipo %d \n", A,B,bits,tipo );
+  int valor = 0;
+  switch (tipo) {
+
+  case 1: // subtrator
+    valor = subtratorImpreciso(A, B, bits);
+    break;
+  case 2:// loa
+    valor = AXSC1(A, B, bits);
+    break;
+  case 3: // subtrator
+    valor = AXSC2(A, B, bits);
+    break;
+  case 4:// loa
+    valor = AXSC3(A, B, bits);
+    break;    
+  case 5: // subtrator
+    valor = AXS1(A, B, bits);
+    break;
+  case 6:// loa
+    valor = AXS2(A, B, bits);
+    break;
+  case 7: // subtrator
+    valor = AXS3(A, B, bits);
+    break;
+  case 8:// loa
+    valor = bitFS(A, B, bits);
+    break;
+  case 9:// loa
+    valor = mnl(A, B, bits);
+    break;
+  case 10:// loa
+    valor = srfft(A, B, bits);
+    break;
+   case 11:// loa
+    valor = loa(A, B, bits);
+    break;   
+  case 12:// subtrator normal
+    valor = A - B;
+    break;
+    
+    
+    
+    
+  }
+  return valor;
+}
+//end rafael 
+
+
+
+
+
 
 RdCost::RdCost()
 {
@@ -588,13 +1063,20 @@ Distortion RdCost::xGetSAD4( const DistParam& rcDtParam )
   int  iStrideOrg    = rcDtParam.org.stride * iSubStep;
 
   Distortion uiSum = 0;
-
+  iDF_SAD4++;
   for( ; iRows != 0; iRows -= iSubStep )
   {
-    uiSum += abs( piOrg[0] - piCur[0] );
-    uiSum += abs( piOrg[1] - piCur[1] );
-    uiSum += abs( piOrg[2] - piCur[2] );
-    uiSum += abs( piOrg[3] - piCur[3] );
+    // uiSum += abs( piOrg[0] - piCur[0] );
+    // uiSum += abs( piOrg[1] - piCur[1] );
+    // uiSum += abs( piOrg[2] - piCur[2] );
+    // uiSum += abs( piOrg[3] - piCur[3] );
+
+
+    uiSum += abs(subtrai(piOrg[0], piCur[0], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[1], piCur[1], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[2], piCur[2], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[3], piCur[3], iImpreciso, iTpsomador));
+
 
     piOrg += iStrideOrg;
     piCur += iStrideCur;
@@ -620,17 +1102,27 @@ Distortion RdCost::xGetSAD8( const DistParam& rcDtParam )
   int  iStrideOrg       = rcDtParam.org.stride * iSubStep;
 
   Distortion uiSum = 0;
-
+  iDF_SAD8++;
   for( ; iRows != 0; iRows-=iSubStep )
   {
-    uiSum += abs( piOrg[0] - piCur[0] );
-    uiSum += abs( piOrg[1] - piCur[1] );
-    uiSum += abs( piOrg[2] - piCur[2] );
-    uiSum += abs( piOrg[3] - piCur[3] );
-    uiSum += abs( piOrg[4] - piCur[4] );
-    uiSum += abs( piOrg[5] - piCur[5] );
-    uiSum += abs( piOrg[6] - piCur[6] );
-    uiSum += abs( piOrg[7] - piCur[7] );
+    // uiSum += abs( piOrg[0] - piCur[0] );
+    // uiSum += abs( piOrg[1] - piCur[1] );
+    // uiSum += abs( piOrg[2] - piCur[2] );
+    // uiSum += abs( piOrg[3] - piCur[3] );
+    // uiSum += abs( piOrg[4] - piCur[4] );
+    // uiSum += abs( piOrg[5] - piCur[5] );
+    // uiSum += abs( piOrg[6] - piCur[6] );
+    // uiSum += abs( piOrg[7] - piCur[7] );
+
+    uiSum += abs(subtrai(piOrg[0], piCur[0], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[1], piCur[1], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[2], piCur[2], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[3], piCur[3], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[4], piCur[4], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[5], piCur[5], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[6], piCur[6], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[7], piCur[7], iImpreciso, iTpsomador));
+
 
     piOrg += iStrideOrg;
     piCur += iStrideCur;
@@ -656,25 +1148,47 @@ Distortion RdCost::xGetSAD16( const DistParam& rcDtParam )
   int  iStrideOrg       = rcDtParam.org.stride * iSubStep;
 
   Distortion uiSum = 0;
+  iDF_SAD16++;
 
   for( ; iRows != 0; iRows -= iSubStep )
   {
-    uiSum += abs( piOrg[0] - piCur[0] );
-    uiSum += abs( piOrg[1] - piCur[1] );
-    uiSum += abs( piOrg[2] - piCur[2] );
-    uiSum += abs( piOrg[3] - piCur[3] );
-    uiSum += abs( piOrg[4] - piCur[4] );
-    uiSum += abs( piOrg[5] - piCur[5] );
-    uiSum += abs( piOrg[6] - piCur[6] );
-    uiSum += abs( piOrg[7] - piCur[7] );
-    uiSum += abs( piOrg[8] - piCur[8] );
-    uiSum += abs( piOrg[9] - piCur[9] );
-    uiSum += abs( piOrg[10] - piCur[10] );
-    uiSum += abs( piOrg[11] - piCur[11] );
-    uiSum += abs( piOrg[12] - piCur[12] );
-    uiSum += abs( piOrg[13] - piCur[13] );
-    uiSum += abs( piOrg[14] - piCur[14] );
-    uiSum += abs( piOrg[15] - piCur[15] );
+    // uiSum += abs( piOrg[0] - piCur[0] );
+    // uiSum += abs( piOrg[1] - piCur[1] );
+    // uiSum += abs( piOrg[2] - piCur[2] );
+    // uiSum += abs( piOrg[3] - piCur[3] );
+    // uiSum += abs( piOrg[4] - piCur[4] );
+    // uiSum += abs( piOrg[5] - piCur[5] );
+    // uiSum += abs( piOrg[6] - piCur[6] );
+    // uiSum += abs( piOrg[7] - piCur[7] );
+    // uiSum += abs( piOrg[8] - piCur[8] );
+    // uiSum += abs( piOrg[9] - piCur[9] );
+    // uiSum += abs( piOrg[10] - piCur[10] );
+    // uiSum += abs( piOrg[11] - piCur[11] );
+    // uiSum += abs( piOrg[12] - piCur[12] );
+    // uiSum += abs( piOrg[13] - piCur[13] );
+    // uiSum += abs( piOrg[14] - piCur[14] );
+    // uiSum += abs( piOrg[15] - piCur[15] );
+
+
+
+     uiSum += abs(subtrai(piOrg[0], piCur[0], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[1], piCur[1], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[2], piCur[2], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[3], piCur[3], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[4], piCur[4], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[5], piCur[5], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[6], piCur[6], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[7], piCur[7], iImpreciso, iTpsomador));
+
+    uiSum += abs(subtrai(piOrg[8], piCur[8], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[9], piCur[9], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[10], piCur[10], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[11], piCur[11], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[12], piCur[12], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[13], piCur[13], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[14], piCur[14], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[15], piCur[15], iImpreciso, iTpsomador));
+   
 
     piOrg += iStrideOrg;
     piCur += iStrideCur;
@@ -700,21 +1214,36 @@ Distortion RdCost::xGetSAD12( const DistParam& rcDtParam )
   int  iStrideOrg       = rcDtParam.org.stride * iSubStep;
 
   Distortion uiSum = 0;
-
+  iDF_SAD12++;
   for( ; iRows != 0; iRows-=iSubStep )
   {
-    uiSum += abs( piOrg[0] - piCur[0] );
-    uiSum += abs( piOrg[1] - piCur[1] );
-    uiSum += abs( piOrg[2] - piCur[2] );
-    uiSum += abs( piOrg[3] - piCur[3] );
-    uiSum += abs( piOrg[4] - piCur[4] );
-    uiSum += abs( piOrg[5] - piCur[5] );
-    uiSum += abs( piOrg[6] - piCur[6] );
-    uiSum += abs( piOrg[7] - piCur[7] );
-    uiSum += abs( piOrg[8] - piCur[8] );
-    uiSum += abs( piOrg[9] - piCur[9] );
-    uiSum += abs( piOrg[10] - piCur[10] );
-    uiSum += abs( piOrg[11] - piCur[11] );
+    // uiSum += abs( piOrg[0] - piCur[0] );
+    // uiSum += abs( piOrg[1] - piCur[1] );
+    // uiSum += abs( piOrg[2] - piCur[2] );
+    // uiSum += abs( piOrg[3] - piCur[3] );
+    // uiSum += abs( piOrg[4] - piCur[4] );
+    // uiSum += abs( piOrg[5] - piCur[5] );
+    // uiSum += abs( piOrg[6] - piCur[6] );
+    // uiSum += abs( piOrg[7] - piCur[7] );
+    // uiSum += abs( piOrg[8] - piCur[8] );
+    // uiSum += abs( piOrg[9] - piCur[9] );
+    // uiSum += abs( piOrg[10] - piCur[10] );
+    // uiSum += abs( piOrg[11] - piCur[11] );
+
+
+    uiSum += abs(subtrai(piOrg[0], piCur[0], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[1], piCur[1], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[2], piCur[2], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[3], piCur[3], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[4], piCur[4], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[5], piCur[5], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[6], piCur[6], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[7], piCur[7], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[8], piCur[8], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[9], piCur[9], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[10], piCur[10], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[11], piCur[11], iImpreciso, iTpsomador));
+
 
     piOrg += iStrideOrg;
     piCur += iStrideCur;
@@ -736,27 +1265,46 @@ Distortion RdCost::xGetSAD16N( const DistParam &rcDtParam )
   int  iStrideOrg   = rcDtParam.org.stride * iSubStep;
 
   Distortion uiSum = 0;
-
+  iDF_SAD16N++;
   for( ; iRows != 0; iRows-=iSubStep )
   {
     for (int n = 0; n < iCols; n+=16 )
     {
-      uiSum += abs( piOrg[n+ 0] - piCur[n+ 0] );
-      uiSum += abs( piOrg[n+ 1] - piCur[n+ 1] );
-      uiSum += abs( piOrg[n+ 2] - piCur[n+ 2] );
-      uiSum += abs( piOrg[n+ 3] - piCur[n+ 3] );
-      uiSum += abs( piOrg[n+ 4] - piCur[n+ 4] );
-      uiSum += abs( piOrg[n+ 5] - piCur[n+ 5] );
-      uiSum += abs( piOrg[n+ 6] - piCur[n+ 6] );
-      uiSum += abs( piOrg[n+ 7] - piCur[n+ 7] );
-      uiSum += abs( piOrg[n+ 8] - piCur[n+ 8] );
-      uiSum += abs( piOrg[n+ 9] - piCur[n+ 9] );
-      uiSum += abs( piOrg[n+10] - piCur[n+10] );
-      uiSum += abs( piOrg[n+11] - piCur[n+11] );
-      uiSum += abs( piOrg[n+12] - piCur[n+12] );
-      uiSum += abs( piOrg[n+13] - piCur[n+13] );
-      uiSum += abs( piOrg[n+14] - piCur[n+14] );
-      uiSum += abs( piOrg[n+15] - piCur[n+15] );
+      // uiSum += abs( piOrg[n+ 0] - piCur[n+ 0] );
+      // uiSum += abs( piOrg[n+ 1] - piCur[n+ 1] );
+      // uiSum += abs( piOrg[n+ 2] - piCur[n+ 2] );
+      // uiSum += abs( piOrg[n+ 3] - piCur[n+ 3] );
+      // uiSum += abs( piOrg[n+ 4] - piCur[n+ 4] );
+      // uiSum += abs( piOrg[n+ 5] - piCur[n+ 5] );
+      // uiSum += abs( piOrg[n+ 6] - piCur[n+ 6] );
+      // uiSum += abs( piOrg[n+ 7] - piCur[n+ 7] );
+      // uiSum += abs( piOrg[n+ 8] - piCur[n+ 8] );
+      // uiSum += abs( piOrg[n+ 9] - piCur[n+ 9] );
+      // uiSum += abs( piOrg[n+10] - piCur[n+10] );
+      // uiSum += abs( piOrg[n+11] - piCur[n+11] );
+      // uiSum += abs( piOrg[n+12] - piCur[n+12] );
+      // uiSum += abs( piOrg[n+13] - piCur[n+13] );
+      // uiSum += abs( piOrg[n+14] - piCur[n+14] );
+      // uiSum += abs( piOrg[n+15] - piCur[n+15] );
+      uiSum += abs(subtrai(piOrg[n + 0], piCur[n + 0], iImpreciso,iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 1], piCur[n + 1], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 2], piCur[n + 2], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 3], piCur[n + 3], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 4], piCur[n + 4], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 5], piCur[n + 5], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 6], piCur[n + 6], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 7], piCur[n + 7], iImpreciso, iTpsomador));
+
+      uiSum += abs(subtrai(piOrg[n + 8], piCur[n + 8], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 9], piCur[n + 9], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 10], piCur[n + 10], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 11], piCur[n + 11], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 12], piCur[n + 12], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 13], piCur[n + 13], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 14], piCur[n + 14], iImpreciso, iTpsomador));
+      uiSum += abs(subtrai(piOrg[n + 15], piCur[n + 15], iImpreciso, iTpsomador));
+
+
     }
     piOrg += iStrideOrg;
     piCur += iStrideCur;
@@ -782,41 +1330,81 @@ Distortion RdCost::xGetSAD32( const DistParam &rcDtParam )
   int  iStrideOrg       = rcDtParam.org.stride * iSubStep;
 
   Distortion uiSum = 0;
+  iDF_SAD32++;
 
   for( ; iRows != 0; iRows-=iSubStep )
   {
-    uiSum += abs( piOrg[0] - piCur[0] );
-    uiSum += abs( piOrg[1] - piCur[1] );
-    uiSum += abs( piOrg[2] - piCur[2] );
-    uiSum += abs( piOrg[3] - piCur[3] );
-    uiSum += abs( piOrg[4] - piCur[4] );
-    uiSum += abs( piOrg[5] - piCur[5] );
-    uiSum += abs( piOrg[6] - piCur[6] );
-    uiSum += abs( piOrg[7] - piCur[7] );
-    uiSum += abs( piOrg[8] - piCur[8] );
-    uiSum += abs( piOrg[9] - piCur[9] );
-    uiSum += abs( piOrg[10] - piCur[10] );
-    uiSum += abs( piOrg[11] - piCur[11] );
-    uiSum += abs( piOrg[12] - piCur[12] );
-    uiSum += abs( piOrg[13] - piCur[13] );
-    uiSum += abs( piOrg[14] - piCur[14] );
-    uiSum += abs( piOrg[15] - piCur[15] );
-    uiSum += abs( piOrg[16] - piCur[16] );
-    uiSum += abs( piOrg[17] - piCur[17] );
-    uiSum += abs( piOrg[18] - piCur[18] );
-    uiSum += abs( piOrg[19] - piCur[19] );
-    uiSum += abs( piOrg[20] - piCur[20] );
-    uiSum += abs( piOrg[21] - piCur[21] );
-    uiSum += abs( piOrg[22] - piCur[22] );
-    uiSum += abs( piOrg[23] - piCur[23] );
-    uiSum += abs( piOrg[24] - piCur[24] );
-    uiSum += abs( piOrg[25] - piCur[25] );
-    uiSum += abs( piOrg[26] - piCur[26] );
-    uiSum += abs( piOrg[27] - piCur[27] );
-    uiSum += abs( piOrg[28] - piCur[28] );
-    uiSum += abs( piOrg[29] - piCur[29] );
-    uiSum += abs( piOrg[30] - piCur[30] );
-    uiSum += abs( piOrg[31] - piCur[31] );
+    // uiSum += abs( piOrg[0] - piCur[0] );
+    // uiSum += abs( piOrg[1] - piCur[1] );
+    // uiSum += abs( piOrg[2] - piCur[2] );
+    // uiSum += abs( piOrg[3] - piCur[3] );
+    // uiSum += abs( piOrg[4] - piCur[4] );
+    // uiSum += abs( piOrg[5] - piCur[5] );
+    // uiSum += abs( piOrg[6] - piCur[6] );
+    // uiSum += abs( piOrg[7] - piCur[7] );
+    // uiSum += abs( piOrg[8] - piCur[8] );
+    // uiSum += abs( piOrg[9] - piCur[9] );
+    // uiSum += abs( piOrg[10] - piCur[10] );
+    // uiSum += abs( piOrg[11] - piCur[11] );
+    // uiSum += abs( piOrg[12] - piCur[12] );
+    // uiSum += abs( piOrg[13] - piCur[13] );
+    // uiSum += abs( piOrg[14] - piCur[14] );
+    // uiSum += abs( piOrg[15] - piCur[15] );
+    // uiSum += abs( piOrg[16] - piCur[16] );
+    // uiSum += abs( piOrg[17] - piCur[17] );
+    // uiSum += abs( piOrg[18] - piCur[18] );
+    // uiSum += abs( piOrg[19] - piCur[19] );
+    // uiSum += abs( piOrg[20] - piCur[20] );
+    // uiSum += abs( piOrg[21] - piCur[21] );
+    // uiSum += abs( piOrg[22] - piCur[22] );
+    // uiSum += abs( piOrg[23] - piCur[23] );
+    // uiSum += abs( piOrg[24] - piCur[24] );
+    // uiSum += abs( piOrg[25] - piCur[25] );
+    // uiSum += abs( piOrg[26] - piCur[26] );
+    // uiSum += abs( piOrg[27] - piCur[27] );
+    // uiSum += abs( piOrg[28] - piCur[28] );
+    // uiSum += abs( piOrg[29] - piCur[29] );
+    // uiSum += abs( piOrg[30] - piCur[30] );
+    // uiSum += abs( piOrg[31] - piCur[31] );
+
+    uiSum += abs(subtrai(piOrg[0], piCur[0], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[1], piCur[1], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[2], piCur[2], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[3], piCur[3], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[4], piCur[4], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[5], piCur[5], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[6], piCur[6], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[7], piCur[7], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[8], piCur[8], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[9], piCur[9], iImpreciso, iTpsomador));
+
+    uiSum += abs(subtrai(piOrg[10], piCur[10], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[11], piCur[11], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[12], piCur[12], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[13], piCur[13], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[14], piCur[14], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[15], piCur[15], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[16], piCur[16], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[17], piCur[17], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[18], piCur[18], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[19], piCur[19], iImpreciso, iTpsomador));
+
+
+    uiSum += abs(subtrai(piOrg[20], piCur[20], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[21], piCur[21], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[22], piCur[22], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[23], piCur[23], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[24], piCur[24], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[25], piCur[25], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[26], piCur[26], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[27], piCur[27], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[28], piCur[28], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[29], piCur[29], iImpreciso, iTpsomador));
+
+
+    uiSum += abs(subtrai(piOrg[30], piCur[30], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[31], piCur[31], iImpreciso, iTpsomador));
+
 
     piOrg += iStrideOrg;
     piCur += iStrideCur;
@@ -842,33 +1430,63 @@ Distortion RdCost::xGetSAD24( const DistParam &rcDtParam )
   int  iStrideOrg       = rcDtParam.org.stride * iSubStep;
 
   Distortion uiSum = 0;
+  iDF_SAD24++;
 
   for( ; iRows != 0; iRows-=iSubStep )
   {
-    uiSum += abs( piOrg[0] - piCur[0] );
-    uiSum += abs( piOrg[1] - piCur[1] );
-    uiSum += abs( piOrg[2] - piCur[2] );
-    uiSum += abs( piOrg[3] - piCur[3] );
-    uiSum += abs( piOrg[4] - piCur[4] );
-    uiSum += abs( piOrg[5] - piCur[5] );
-    uiSum += abs( piOrg[6] - piCur[6] );
-    uiSum += abs( piOrg[7] - piCur[7] );
-    uiSum += abs( piOrg[8] - piCur[8] );
-    uiSum += abs( piOrg[9] - piCur[9] );
-    uiSum += abs( piOrg[10] - piCur[10] );
-    uiSum += abs( piOrg[11] - piCur[11] );
-    uiSum += abs( piOrg[12] - piCur[12] );
-    uiSum += abs( piOrg[13] - piCur[13] );
-    uiSum += abs( piOrg[14] - piCur[14] );
-    uiSum += abs( piOrg[15] - piCur[15] );
-    uiSum += abs( piOrg[16] - piCur[16] );
-    uiSum += abs( piOrg[17] - piCur[17] );
-    uiSum += abs( piOrg[18] - piCur[18] );
-    uiSum += abs( piOrg[19] - piCur[19] );
-    uiSum += abs( piOrg[20] - piCur[20] );
-    uiSum += abs( piOrg[21] - piCur[21] );
-    uiSum += abs( piOrg[22] - piCur[22] );
-    uiSum += abs( piOrg[23] - piCur[23] );
+    // uiSum += abs( piOrg[0] - piCur[0] );
+    // uiSum += abs( piOrg[1] - piCur[1] );
+    // uiSum += abs( piOrg[2] - piCur[2] );
+    // uiSum += abs( piOrg[3] - piCur[3] );
+    // uiSum += abs( piOrg[4] - piCur[4] );
+    // uiSum += abs( piOrg[5] - piCur[5] );
+    // uiSum += abs( piOrg[6] - piCur[6] );
+    // uiSum += abs( piOrg[7] - piCur[7] );
+    // uiSum += abs( piOrg[8] - piCur[8] );
+    // uiSum += abs( piOrg[9] - piCur[9] );
+    // uiSum += abs( piOrg[10] - piCur[10] );
+    // uiSum += abs( piOrg[11] - piCur[11] );
+    // uiSum += abs( piOrg[12] - piCur[12] );
+    // uiSum += abs( piOrg[13] - piCur[13] );
+    // uiSum += abs( piOrg[14] - piCur[14] );
+    // uiSum += abs( piOrg[15] - piCur[15] );
+    // uiSum += abs( piOrg[16] - piCur[16] );
+    // uiSum += abs( piOrg[17] - piCur[17] );
+    // uiSum += abs( piOrg[18] - piCur[18] );
+    // uiSum += abs( piOrg[19] - piCur[19] );
+    // uiSum += abs( piOrg[20] - piCur[20] );
+    // uiSum += abs( piOrg[21] - piCur[21] );
+    // uiSum += abs( piOrg[22] - piCur[22] );
+    // uiSum += abs( piOrg[23] - piCur[23] );
+
+    uiSum += abs(subtrai(piOrg[0], piCur[0], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[1], piCur[1], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[2], piCur[2], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[3], piCur[3], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[4], piCur[4], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[5], piCur[5], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[6], piCur[6], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[7], piCur[7], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[8], piCur[8], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[9], piCur[9], iImpreciso, iTpsomador));
+
+    uiSum += abs(subtrai(piOrg[10], piCur[10], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[11], piCur[11], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[12], piCur[12], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[13], piCur[13], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[14], piCur[14], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[15], piCur[15], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[16], piCur[16], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[17], piCur[17], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[18], piCur[18], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[19], piCur[19], iImpreciso, iTpsomador));
+
+
+    uiSum += abs(subtrai(piOrg[20], piCur[20], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[21], piCur[21], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[22], piCur[22], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[23], piCur[23], iImpreciso, iTpsomador));
+
 
     piOrg += iStrideOrg;
     piCur += iStrideCur;
@@ -894,73 +1512,154 @@ Distortion RdCost::xGetSAD64( const DistParam &rcDtParam )
   int  iStrideOrg       = rcDtParam.org.stride * iSubStep;
 
   Distortion uiSum = 0;
+  iDF_SAD64++;
 
   for( ; iRows != 0; iRows-=iSubStep )
   {
-    uiSum += abs( piOrg[0] - piCur[0] );
-    uiSum += abs( piOrg[1] - piCur[1] );
-    uiSum += abs( piOrg[2] - piCur[2] );
-    uiSum += abs( piOrg[3] - piCur[3] );
-    uiSum += abs( piOrg[4] - piCur[4] );
-    uiSum += abs( piOrg[5] - piCur[5] );
-    uiSum += abs( piOrg[6] - piCur[6] );
-    uiSum += abs( piOrg[7] - piCur[7] );
-    uiSum += abs( piOrg[8] - piCur[8] );
-    uiSum += abs( piOrg[9] - piCur[9] );
-    uiSum += abs( piOrg[10] - piCur[10] );
-    uiSum += abs( piOrg[11] - piCur[11] );
-    uiSum += abs( piOrg[12] - piCur[12] );
-    uiSum += abs( piOrg[13] - piCur[13] );
-    uiSum += abs( piOrg[14] - piCur[14] );
-    uiSum += abs( piOrg[15] - piCur[15] );
-    uiSum += abs( piOrg[16] - piCur[16] );
-    uiSum += abs( piOrg[17] - piCur[17] );
-    uiSum += abs( piOrg[18] - piCur[18] );
-    uiSum += abs( piOrg[19] - piCur[19] );
-    uiSum += abs( piOrg[20] - piCur[20] );
-    uiSum += abs( piOrg[21] - piCur[21] );
-    uiSum += abs( piOrg[22] - piCur[22] );
-    uiSum += abs( piOrg[23] - piCur[23] );
-    uiSum += abs( piOrg[24] - piCur[24] );
-    uiSum += abs( piOrg[25] - piCur[25] );
-    uiSum += abs( piOrg[26] - piCur[26] );
-    uiSum += abs( piOrg[27] - piCur[27] );
-    uiSum += abs( piOrg[28] - piCur[28] );
-    uiSum += abs( piOrg[29] - piCur[29] );
-    uiSum += abs( piOrg[30] - piCur[30] );
-    uiSum += abs( piOrg[31] - piCur[31] );
-    uiSum += abs( piOrg[32] - piCur[32] );
-    uiSum += abs( piOrg[33] - piCur[33] );
-    uiSum += abs( piOrg[34] - piCur[34] );
-    uiSum += abs( piOrg[35] - piCur[35] );
-    uiSum += abs( piOrg[36] - piCur[36] );
-    uiSum += abs( piOrg[37] - piCur[37] );
-    uiSum += abs( piOrg[38] - piCur[38] );
-    uiSum += abs( piOrg[39] - piCur[39] );
-    uiSum += abs( piOrg[40] - piCur[40] );
-    uiSum += abs( piOrg[41] - piCur[41] );
-    uiSum += abs( piOrg[42] - piCur[42] );
-    uiSum += abs( piOrg[43] - piCur[43] );
-    uiSum += abs( piOrg[44] - piCur[44] );
-    uiSum += abs( piOrg[45] - piCur[45] );
-    uiSum += abs( piOrg[46] - piCur[46] );
-    uiSum += abs( piOrg[47] - piCur[47] );
-    uiSum += abs( piOrg[48] - piCur[48] );
-    uiSum += abs( piOrg[49] - piCur[49] );
-    uiSum += abs( piOrg[50] - piCur[50] );
-    uiSum += abs( piOrg[51] - piCur[51] );
-    uiSum += abs( piOrg[52] - piCur[52] );
-    uiSum += abs( piOrg[53] - piCur[53] );
-    uiSum += abs( piOrg[54] - piCur[54] );
-    uiSum += abs( piOrg[55] - piCur[55] );
-    uiSum += abs( piOrg[56] - piCur[56] );
-    uiSum += abs( piOrg[57] - piCur[57] );
-    uiSum += abs( piOrg[58] - piCur[58] );
-    uiSum += abs( piOrg[59] - piCur[59] );
-    uiSum += abs( piOrg[60] - piCur[60] );
-    uiSum += abs( piOrg[61] - piCur[61] );
-    uiSum += abs( piOrg[62] - piCur[62] );
-    uiSum += abs( piOrg[63] - piCur[63] );
+    // uiSum += abs( piOrg[0] - piCur[0] );
+    // uiSum += abs( piOrg[1] - piCur[1] );
+    // uiSum += abs( piOrg[2] - piCur[2] );
+    // uiSum += abs( piOrg[3] - piCur[3] );
+    // uiSum += abs( piOrg[4] - piCur[4] );
+    // uiSum += abs( piOrg[5] - piCur[5] );
+    // uiSum += abs( piOrg[6] - piCur[6] );
+    // uiSum += abs( piOrg[7] - piCur[7] );
+    // uiSum += abs( piOrg[8] - piCur[8] );
+    // uiSum += abs( piOrg[9] - piCur[9] );
+    // uiSum += abs( piOrg[10] - piCur[10] );
+    // uiSum += abs( piOrg[11] - piCur[11] );
+    // uiSum += abs( piOrg[12] - piCur[12] );
+    // uiSum += abs( piOrg[13] - piCur[13] );
+    // uiSum += abs( piOrg[14] - piCur[14] );
+    // uiSum += abs( piOrg[15] - piCur[15] );
+    // uiSum += abs( piOrg[16] - piCur[16] );
+    // uiSum += abs( piOrg[17] - piCur[17] );
+    // uiSum += abs( piOrg[18] - piCur[18] );
+    // uiSum += abs( piOrg[19] - piCur[19] );
+    // uiSum += abs( piOrg[20] - piCur[20] );
+    // uiSum += abs( piOrg[21] - piCur[21] );
+    // uiSum += abs( piOrg[22] - piCur[22] );
+    // uiSum += abs( piOrg[23] - piCur[23] );
+    // uiSum += abs( piOrg[24] - piCur[24] );
+    // uiSum += abs( piOrg[25] - piCur[25] );
+    // uiSum += abs( piOrg[26] - piCur[26] );
+    // uiSum += abs( piOrg[27] - piCur[27] );
+    // uiSum += abs( piOrg[28] - piCur[28] );
+    // uiSum += abs( piOrg[29] - piCur[29] );
+    // uiSum += abs( piOrg[30] - piCur[30] );
+    // uiSum += abs( piOrg[31] - piCur[31] );
+    // uiSum += abs( piOrg[32] - piCur[32] );
+    // uiSum += abs( piOrg[33] - piCur[33] );
+    // uiSum += abs( piOrg[34] - piCur[34] );
+    // uiSum += abs( piOrg[35] - piCur[35] );
+    // uiSum += abs( piOrg[36] - piCur[36] );
+    // uiSum += abs( piOrg[37] - piCur[37] );
+    // uiSum += abs( piOrg[38] - piCur[38] );
+    // uiSum += abs( piOrg[39] - piCur[39] );
+    // uiSum += abs( piOrg[40] - piCur[40] );
+    // uiSum += abs( piOrg[41] - piCur[41] );
+    // uiSum += abs( piOrg[42] - piCur[42] );
+    // uiSum += abs( piOrg[43] - piCur[43] );
+    // uiSum += abs( piOrg[44] - piCur[44] );
+    // uiSum += abs( piOrg[45] - piCur[45] );
+    // uiSum += abs( piOrg[46] - piCur[46] );
+    // uiSum += abs( piOrg[47] - piCur[47] );
+    // uiSum += abs( piOrg[48] - piCur[48] );
+    // uiSum += abs( piOrg[49] - piCur[49] );
+    // uiSum += abs( piOrg[50] - piCur[50] );
+    // uiSum += abs( piOrg[51] - piCur[51] );
+    // uiSum += abs( piOrg[52] - piCur[52] );
+    // uiSum += abs( piOrg[53] - piCur[53] );
+    // uiSum += abs( piOrg[54] - piCur[54] );
+    // uiSum += abs( piOrg[55] - piCur[55] );
+    // uiSum += abs( piOrg[56] - piCur[56] );
+    // uiSum += abs( piOrg[57] - piCur[57] );
+    // uiSum += abs( piOrg[58] - piCur[58] );
+    // uiSum += abs( piOrg[59] - piCur[59] );
+    // uiSum += abs( piOrg[60] - piCur[60] );
+    // uiSum += abs( piOrg[61] - piCur[61] );
+    // uiSum += abs( piOrg[62] - piCur[62] );
+    // uiSum += abs( piOrg[63] - piCur[63] );
+
+
+      uiSum += abs(subtrai(piOrg[0], piCur[0], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[1], piCur[1], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[2], piCur[2], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[3], piCur[3], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[4], piCur[4], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[5], piCur[5], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[6], piCur[6], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[7], piCur[7], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[8], piCur[8], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[9], piCur[9], iImpreciso, iTpsomador));
+
+    uiSum += abs(subtrai(piOrg[10], piCur[10], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[11], piCur[11], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[12], piCur[12], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[13], piCur[13], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[14], piCur[14], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[15], piCur[15], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[16], piCur[16], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[17], piCur[17], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[18], piCur[18], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[19], piCur[19], iImpreciso, iTpsomador));
+
+
+    uiSum += abs(subtrai(piOrg[20], piCur[20], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[21], piCur[21], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[22], piCur[22], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[23], piCur[23], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[24], piCur[24], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[25], piCur[25], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[26], piCur[26], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[27], piCur[27], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[28], piCur[28], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[29], piCur[29], iImpreciso, iTpsomador));
+
+
+    uiSum += abs(subtrai(piOrg[30], piCur[30], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[31], piCur[31], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[32], piCur[32], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[33], piCur[33], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[34], piCur[34], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[35], piCur[35], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[36], piCur[36], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[37], piCur[37], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[38], piCur[38], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[39], piCur[39], iImpreciso, iTpsomador));
+
+
+
+    uiSum += abs(subtrai(piOrg[40], piCur[40], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[41], piCur[41], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[42], piCur[42], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[43], piCur[43], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[44], piCur[44], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[45], piCur[45], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[46], piCur[46], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[47], piCur[47], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[48], piCur[48], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[49], piCur[49], iImpreciso, iTpsomador));
+
+
+
+    uiSum += abs(subtrai(piOrg[50], piCur[50], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[51], piCur[51], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[52], piCur[52], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[53], piCur[53], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[54], piCur[54], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[55], piCur[55], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[56], piCur[56], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[57], piCur[57], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[58], piCur[58], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[59], piCur[59], iImpreciso, iTpsomador));
+
+
+    uiSum += abs(subtrai(piOrg[60], piCur[60], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[61], piCur[61], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[62], piCur[62], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[63], piCur[63], iImpreciso, iTpsomador));
+  
 
     piOrg += iStrideOrg;
     piCur += iStrideCur;
@@ -986,57 +1685,117 @@ Distortion RdCost::xGetSAD48( const DistParam &rcDtParam )
   int  iStrideOrg       = rcDtParam.org.stride * iSubStep;
 
   Distortion uiSum = 0;
+  iDF_SAD48++;
 
   for( ; iRows != 0; iRows-=iSubStep )
   {
-    uiSum += abs( piOrg[0] - piCur[0] );
-    uiSum += abs( piOrg[1] - piCur[1] );
-    uiSum += abs( piOrg[2] - piCur[2] );
-    uiSum += abs( piOrg[3] - piCur[3] );
-    uiSum += abs( piOrg[4] - piCur[4] );
-    uiSum += abs( piOrg[5] - piCur[5] );
-    uiSum += abs( piOrg[6] - piCur[6] );
-    uiSum += abs( piOrg[7] - piCur[7] );
-    uiSum += abs( piOrg[8] - piCur[8] );
-    uiSum += abs( piOrg[9] - piCur[9] );
-    uiSum += abs( piOrg[10] - piCur[10] );
-    uiSum += abs( piOrg[11] - piCur[11] );
-    uiSum += abs( piOrg[12] - piCur[12] );
-    uiSum += abs( piOrg[13] - piCur[13] );
-    uiSum += abs( piOrg[14] - piCur[14] );
-    uiSum += abs( piOrg[15] - piCur[15] );
-    uiSum += abs( piOrg[16] - piCur[16] );
-    uiSum += abs( piOrg[17] - piCur[17] );
-    uiSum += abs( piOrg[18] - piCur[18] );
-    uiSum += abs( piOrg[19] - piCur[19] );
-    uiSum += abs( piOrg[20] - piCur[20] );
-    uiSum += abs( piOrg[21] - piCur[21] );
-    uiSum += abs( piOrg[22] - piCur[22] );
-    uiSum += abs( piOrg[23] - piCur[23] );
-    uiSum += abs( piOrg[24] - piCur[24] );
-    uiSum += abs( piOrg[25] - piCur[25] );
-    uiSum += abs( piOrg[26] - piCur[26] );
-    uiSum += abs( piOrg[27] - piCur[27] );
-    uiSum += abs( piOrg[28] - piCur[28] );
-    uiSum += abs( piOrg[29] - piCur[29] );
-    uiSum += abs( piOrg[30] - piCur[30] );
-    uiSum += abs( piOrg[31] - piCur[31] );
-    uiSum += abs( piOrg[32] - piCur[32] );
-    uiSum += abs( piOrg[33] - piCur[33] );
-    uiSum += abs( piOrg[34] - piCur[34] );
-    uiSum += abs( piOrg[35] - piCur[35] );
-    uiSum += abs( piOrg[36] - piCur[36] );
-    uiSum += abs( piOrg[37] - piCur[37] );
-    uiSum += abs( piOrg[38] - piCur[38] );
-    uiSum += abs( piOrg[39] - piCur[39] );
-    uiSum += abs( piOrg[40] - piCur[40] );
-    uiSum += abs( piOrg[41] - piCur[41] );
-    uiSum += abs( piOrg[42] - piCur[42] );
-    uiSum += abs( piOrg[43] - piCur[43] );
-    uiSum += abs( piOrg[44] - piCur[44] );
-    uiSum += abs( piOrg[45] - piCur[45] );
-    uiSum += abs( piOrg[46] - piCur[46] );
-    uiSum += abs( piOrg[47] - piCur[47] );
+    // uiSum += abs( piOrg[0] - piCur[0] );
+    // uiSum += abs( piOrg[1] - piCur[1] );
+    // uiSum += abs( piOrg[2] - piCur[2] );
+    // uiSum += abs( piOrg[3] - piCur[3] );
+    // uiSum += abs( piOrg[4] - piCur[4] );
+    // uiSum += abs( piOrg[5] - piCur[5] );
+    // uiSum += abs( piOrg[6] - piCur[6] );
+    // uiSum += abs( piOrg[7] - piCur[7] );
+    // uiSum += abs( piOrg[8] - piCur[8] );
+    // uiSum += abs( piOrg[9] - piCur[9] );
+    // uiSum += abs( piOrg[10] - piCur[10] );
+    // uiSum += abs( piOrg[11] - piCur[11] );
+    // uiSum += abs( piOrg[12] - piCur[12] );
+    // uiSum += abs( piOrg[13] - piCur[13] );
+    // uiSum += abs( piOrg[14] - piCur[14] );
+    // uiSum += abs( piOrg[15] - piCur[15] );
+    // uiSum += abs( piOrg[16] - piCur[16] );
+    // uiSum += abs( piOrg[17] - piCur[17] );
+    // uiSum += abs( piOrg[18] - piCur[18] );
+    // uiSum += abs( piOrg[19] - piCur[19] );
+    // uiSum += abs( piOrg[20] - piCur[20] );
+    // uiSum += abs( piOrg[21] - piCur[21] );
+    // uiSum += abs( piOrg[22] - piCur[22] );
+    // uiSum += abs( piOrg[23] - piCur[23] );
+    // uiSum += abs( piOrg[24] - piCur[24] );
+    // uiSum += abs( piOrg[25] - piCur[25] );
+    // uiSum += abs( piOrg[26] - piCur[26] );
+    // uiSum += abs( piOrg[27] - piCur[27] );
+    // uiSum += abs( piOrg[28] - piCur[28] );
+    // uiSum += abs( piOrg[29] - piCur[29] );
+    // uiSum += abs( piOrg[30] - piCur[30] );
+    // uiSum += abs( piOrg[31] - piCur[31] );
+    // uiSum += abs( piOrg[32] - piCur[32] );
+    // uiSum += abs( piOrg[33] - piCur[33] );
+    // uiSum += abs( piOrg[34] - piCur[34] );
+    // uiSum += abs( piOrg[35] - piCur[35] );
+    // uiSum += abs( piOrg[36] - piCur[36] );
+    // uiSum += abs( piOrg[37] - piCur[37] );
+    // uiSum += abs( piOrg[38] - piCur[38] );
+    // uiSum += abs( piOrg[39] - piCur[39] );
+    // uiSum += abs( piOrg[40] - piCur[40] );
+    // uiSum += abs( piOrg[41] - piCur[41] );
+    // uiSum += abs( piOrg[42] - piCur[42] );
+    // uiSum += abs( piOrg[43] - piCur[43] );
+    // uiSum += abs( piOrg[44] - piCur[44] );
+    // uiSum += abs( piOrg[45] - piCur[45] );
+    // uiSum += abs( piOrg[46] - piCur[46] );
+    // uiSum += abs( piOrg[47] - piCur[47] );
+
+    
+ uiSum += abs(subtrai(piOrg[0], piCur[0], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[1], piCur[1], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[2], piCur[2], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[3], piCur[3], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[4], piCur[4], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[5], piCur[5], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[6], piCur[6], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[7], piCur[7], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[8], piCur[8], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[9], piCur[9], iImpreciso, iTpsomador));
+
+    uiSum += abs(subtrai(piOrg[10], piCur[10], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[11], piCur[11], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[12], piCur[12], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[13], piCur[13], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[14], piCur[14], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[15], piCur[15], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[16], piCur[16], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[17], piCur[17], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[18], piCur[18], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[19], piCur[19], iImpreciso, iTpsomador));
+
+
+    uiSum += abs(subtrai(piOrg[20], piCur[20], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[21], piCur[21], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[22], piCur[22], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[23], piCur[23], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[24], piCur[24], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[25], piCur[25], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[26], piCur[26], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[27], piCur[27], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[28], piCur[28], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[29], piCur[29], iImpreciso, iTpsomador));
+
+
+    uiSum += abs(subtrai(piOrg[30], piCur[30], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[31], piCur[31], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[32], piCur[32], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[33], piCur[33], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[34], piCur[34], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[35], piCur[35], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[36], piCur[36], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[37], piCur[37], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[38], piCur[38], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[39], piCur[39], iImpreciso, iTpsomador));
+
+
+
+    uiSum += abs(subtrai(piOrg[40], piCur[40], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[41], piCur[41], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[42], piCur[42], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[43], piCur[43], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[44], piCur[44], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[45], piCur[45], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[46], piCur[46], iImpreciso, iTpsomador));
+    uiSum += abs(subtrai(piOrg[47], piCur[47], iImpreciso, iTpsomador));
+
 
     piOrg += iStrideOrg;
     piCur += iStrideCur;

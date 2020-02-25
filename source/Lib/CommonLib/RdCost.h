@@ -112,6 +112,24 @@ public:
 class RdCost
 {
 private:
+
+
+
+  //begin rafael
+  static  int subtratorImpreciso(int A, int B, int bits);
+  static  int AXSC1(int A, int B, int bits);
+  static  int AXSC2(int A, int B, int bits);
+  static  int AXSC3(int A, int B, int bits);
+  static  int AXS1(int A, int B, int bits);
+  static  int AXS2(int A, int B, int bits);
+  static  int AXS3(int A, int B, int bits);
+  static  int bitFS(int A, int B, int bits);
+  static  int mnl(int A, int B, int bits);
+  static  int srfft(int A, int B, int bits);
+  static  int loa(int A, int B, int bits);
+  
+
+  // end rafael
   // for distortion
 
   static FpDistFunc       m_afpDistortFunc[DF_TOTAL_FUNCTIONS]; // [eDFunc]
