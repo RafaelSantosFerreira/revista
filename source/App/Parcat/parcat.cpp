@@ -39,6 +39,20 @@
 #include "CommonLib/CommonDef.h"
 #include "DecoderLib/NALread.h"
 #include "VLCReader.h"
+
+int iDF_SAD;
+int iDF_SAD4;
+int iDF_SAD8;
+int iDF_SAD16;
+int iDF_SAD32;
+int iDF_SAD64;
+int iDF_SAD16N;
+int iDF_SAD12;
+int iDF_SAD24;
+int iDF_SAD48;
+int iImpreciso;
+int iTpsomador;
+
 #if ENABLE_TRACING
 #include "CommonLib/dtrace_next.h"
 #endif

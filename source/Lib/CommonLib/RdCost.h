@@ -112,10 +112,9 @@ public:
 class RdCost
 {
 private:
-
-
-
-  //begin rafael
+  // for distortion
+    
+    //begin rafael
   static  int subtratorImpreciso(int A, int B, int bits);
   static  int AXSC1(int A, int B, int bits);
   static  int AXSC2(int A, int B, int bits);
@@ -128,9 +127,9 @@ private:
   static  int srfft(int A, int B, int bits);
   static  int loa(int A, int B, int bits);
   
+  
 
   // end rafael
-  // for distortion
 
   static FpDistFunc       m_afpDistortFunc[DF_TOTAL_FUNCTIONS]; // [eDFunc]
   CostMode                m_costMode;
@@ -434,6 +433,7 @@ private:
 #endif
 
 public:
+    static  int subtrai(int A, int B, int bits, int tipo);
 
 #if WCG_EXT
   Distortion   getDistPart( const CPelBuf &org, const CPelBuf &cur, int bitDepth, const ComponentID compID, DFunc eDFunc, const CPelBuf *orgLuma = NULL );

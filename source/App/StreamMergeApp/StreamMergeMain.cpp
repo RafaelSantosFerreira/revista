@@ -41,6 +41,19 @@
 #include "StreamMergeApp.h"
 #include "program_options_lite.h"
 
+int iDF_SAD;
+int iDF_SAD4;
+int iDF_SAD8;
+int iDF_SAD16;
+int iDF_SAD32;
+int iDF_SAD64;
+int iDF_SAD16N;
+int iDF_SAD12;
+int iDF_SAD24;
+int iDF_SAD48;
+int iImpreciso;
+int iTpsomador;
+
  //! \ingroup DecoderApp
  //! \{
 

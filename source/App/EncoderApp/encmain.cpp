@@ -44,16 +44,6 @@
 #include "EncApp.h"
 #include "Utilities/program_options_lite.h"
 
-
-// begin rafael
-int intvalor;
-int iDF_SSE;
-int iDF_SSE4;
-int iDF_SSE8;
-int iDF_SSE16;
-int iDF_SSE32;
-int iDF_SSE64;
-int iDF_SSE16N;
 int iDF_SAD;
 int iDF_SAD4;
 int iDF_SAD8;
@@ -64,20 +54,8 @@ int iDF_SAD16N;
 int iDF_SAD12;
 int iDF_SAD24;
 int iDF_SAD48;
-int iDF_MRSAD;
-int iDF_MRSAD2;
-int iDF_MRSAD4;
-int iDF_MRSAD8;
-int iDF_MRSAD16;
-int iDF_MRSAD32;
-int iDF_MRSAD64;
-int iDF_MRSAD16N;
-int iDF_MRSAD12;
-int iDF_MRSAD24;
-int iDF_MRSAD48;
 int iImpreciso;
 int iTpsomador;
-// end rafael
 
 //! \ingroup EncoderApp
 //! \{
@@ -118,15 +96,9 @@ static void printMacroSettings()
 
 int main(int argc, char* argv[])
 {
+    
+     // variaveis inicializar
 
-// begin rafael
-  iDF_SSE = 0;
-  iDF_SSE4 = 0;
-  iDF_SSE8 = 0;
-  iDF_SSE16 = 0;
-  iDF_SSE32 = 0;
-  iDF_SSE64 = 0;
-  iDF_SSE16N = 0;
   iDF_SAD = 0;
   iDF_SAD4 = 0;
   iDF_SAD8 = 0;
@@ -137,23 +109,7 @@ int main(int argc, char* argv[])
   iDF_SAD12 = 0;
   iDF_SAD24 = 0;
   iDF_SAD48 = 0;
-  iDF_MRSAD = 0;
-  iDF_MRSAD2 = 0;
-  iDF_MRSAD4 = 0;
-  iDF_MRSAD8 = 0;
-  iDF_MRSAD16 = 0;
-  iDF_MRSAD32 = 0;
-  iDF_MRSAD64 = 0;
-  iDF_MRSAD16N = 0;
-  iDF_MRSAD12 = 0;
-  iDF_MRSAD24 = 0;
-  iDF_MRSAD48 = 0;
-
-  // end rafael
-
-
-  //rafael abetura de arquivos
-//----------------------------------------
+  //----------------------------------------
   string line;
   ifstream subtrator("subtrator.txt");
   if (subtrator.is_open())
@@ -174,17 +130,7 @@ int main(int argc, char* argv[])
     }
     imprecisao.close();
   }
-
-  // print information
-
-//abertura dos arquivos
-
-
-
-
-
-//end rafael
-
+// end rafael
   // print information
   fprintf( stdout, "\n" );
   fprintf( stdout, "VVCSoftware: VTM Encoder Version %s ", VTM_VERSION );
@@ -420,6 +366,12 @@ int main(int argc, char* argv[])
          (endClock - startClock) * 1.0 / CLOCKS_PER_SEC,
          encTime / 1000.0);
 #endif
+  
+  FILE *fp;
+  fp = fopen("valores.txt", "w");
+  fprintf(fp, "%u,%u,%u,%u,%u,%u,%u,%u,%u,%u",  iDF_SAD, iDF_SAD4, iDF_SAD8, iDF_SAD16, iDF_SAD32, iDF_SAD64, iDF_SAD16N, iDF_SAD12, iDF_SAD24, iDF_SAD48);
+  fclose(fp);
+  
 
   return 0;
 }
